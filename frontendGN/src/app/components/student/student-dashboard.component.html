@@ -1,0 +1,162 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900">Mon Tableau de Bord</h1>
+      <p class="text-gray-600 mt-2">Consultez vos résultats et performances</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="card">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Moyenne Générale</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ getOverallAverage() }}/20</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-green-100 text-green-600">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Matières</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ stats.length }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Notes Totales</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ grades.length }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <button (click)="downloadTranscript()" class="w-full btn-primary">
+          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"></path>
+          </svg>
+          Télécharger Relevé
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="mb-6">
+      <div class="flex space-x-4">
+        <button 
+          (click)="filterBySemester('all')"
+          [class]="selectedSemester === 'all' ? 'btn-primary' : 'btn-secondary'"
+        >
+          Tous les semestres
+        </button>
+        <button 
+          (click)="filterBySemester('S1')"
+          [class]="selectedSemester === 'S1' ? 'btn-primary' : 'btn-secondary'"
+        >
+          Semestre 1
+        </button>
+        <button 
+          (click)="filterBySemester('S2')"
+          [class]="selectedSemester === 'S2' ? 'btn-primary' : 'btn-secondary'"
+        >
+          Semestre 2
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Chart -->
+      <div class="card">
+        <h3 class="text-lg font-semibold mb-4">Moyennes par Matière</h3>
+        <div class="h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+          <p class="text-gray-500">Graphique à venir</p>
+        </div>
+      </div>
+
+      <!-- Grades Table -->
+      <div class="card">
+        <h3 class="text-lg font-semibold mb-4">Dernières Notes</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Matière</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Note</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coeff</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let grade of grades.slice(0, 5)">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                  {{ grade.subjectName }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <span [class]="grade.value >= 10 ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'">
+                    {{ grade.value }}/20
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{ grade.coefficient }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {{ grade.date | date:'dd/MM/yyyy' }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subject Details -->
+    <div class="mt-8">
+      <h3 class="text-lg font-semibold mb-4">Détail par Matière</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let stat of stats" class="card">
+          <h4 class="font-semibold text-gray-900 mb-2">{{ stat.subjectName }}</h4>
+          <div class="space-y-2">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Moyenne:</span>
+              <span [class]="stat.average >= 10 ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'">
+                {{ stat.average }}/20
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Min:</span>
+              <span class="text-gray-900">{{ stat.min }}/20</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Max:</span>
+              <span class="text-gray-900">{{ stat.max }}/20</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Notes:</span>
+              <span class="text-gray-900">{{ stat.count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

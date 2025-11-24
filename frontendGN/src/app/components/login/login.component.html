@@ -1,0 +1,132 @@
+<!-- Container principal -->
+<div class="flex h-screen overflow-hidden bg-gradient-to-br from-blue-500 via-blue-700 to-emerald-500">
+  <!-- Section Formulaire (Gauche) -->
+  <div class="flex-1 flex items-center justify-center p-4 bg-white bg-opacity-5 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl p-5 shadow-2xl w-full max-w-sm backdrop-blur-xl border border-blue-200">
+      <div class="text-center mb-4">
+        <div class="flex items-center justify-center gap-4 mb-2">
+          <div class="text-3xl bg-gradient-to-r from-blue-500 to-emerald-500 bg-clip-text text-transparent">🎓</div>
+          <h2 class="text-2xl font-bold text-blue-700 m-0">Connexion</h2>
+        </div>
+        <p class="text-slate-500 text-sm m-0">Accédez à votre espace personnel</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mb-4">
+        <!-- Champ Username -->
+        <div class="mb-3">
+          <label for="username" class="flex items-center gap-2 font-medium text-blue-700 mb-2 text-sm">
+            <span class="text-base">👤</span>
+            Nom d'utilisateur
+          </label>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            class="w-full p-3 border-2 border-indigo-100 rounded-lg text-sm transition-all bg-slate-50 text-blue-700 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg focus:shadow-blue-100"
+            [class]="{'border-red-500 bg-red-50': username?.invalid && username?.touched}"
+            placeholder="Entrez votre nom d'utilisateur"
+          >
+          <div *ngIf="username?.invalid && username?.touched" class="text-red-500 text-xs mt-1">
+            <span *ngIf="username?.errors?.['required']">Le nom d'utilisateur est requis</span>
+          </div>
+        </div>
+
+        <!-- Champ Password -->
+        <div class="mb-3">
+          <label for="password" class="flex items-center gap-2 font-medium text-blue-700 mb-2 text-sm">
+            <span class="text-base">🔒</span>
+            Mot de passe
+          </label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            class="w-full p-3 border-2 border-indigo-100 rounded-lg text-sm transition-all bg-slate-50 text-blue-700 focus:outline-none focus:border-blue-500 focus:bg-white focus:shadow-lg focus:shadow-blue-100"
+            [class]="{'border-red-500 bg-red-50': password?.invalid && password?.touched}"
+            placeholder="Entrez votre mot de passe"
+          >
+          <div *ngIf="password?.invalid && password?.touched" class="text-red-500 text-xs mt-1">
+            <span *ngIf="password?.errors?.['required']">Le mot de passe est requis</span>
+          </div>
+        </div>
+
+        <!-- Message d'erreur -->
+        <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg mb-4 flex items-center gap-2 text-sm">
+          <span>⚠️</span>
+          {{ errorMessage }}
+        </div>
+
+        <!-- Bouton de connexion -->
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid || isLoading"
+          class="w-full bg-gradient-to-r from-blue-500 to-emerald-500 text-white border-none p-3 rounded-lg text-sm font-semibold cursor-pointer transition-all shadow-lg shadow-blue-300 hover:transform hover:-translate-y-0.5 hover:shadow-xl hover:shadow-blue-400 disabled:opacity-70 disabled:cursor-not-allowed"
+        >
+          <span *ngIf="!isLoading" class="flex items-center justify-center gap-2">
+            <span>🚀</span>
+            Se connecter
+          </span>
+          <span *ngIf="isLoading" class="flex items-center justify-center gap-2">
+            <span class="w-4 h-4 border-2 border-white border-opacity-30 border-t-white rounded-full animate-spin"></span>
+            Connexion...
+          </span>
+        </button>
+      </form>
+
+      <!-- Comptes de démonstration -->
+      <div class="border-t border-indigo-100 pt-4">
+        <p class="text-center text-slate-500 text-xs mb-2 font-medium">💡 Comptes de démonstration</p>
+        <div class="grid gap-2">
+          <div class="bg-slate-50 border border-indigo-100 rounded-md p-2 cursor-pointer transition-all hover:bg-indigo-100 hover:border-blue-500 hover:transform hover:-translate-y-0.5 flex justify-between items-center" (click)="fillDemo('darwin', 'darwin')">
+            <span class="font-medium text-blue-700 text-xs">👨💼 Admin</span>
+            <span class="font-mono text-slate-500 text-xs bg-white p-1 rounded border border-indigo-100">darwin / darwin</span>
+          </div>
+          <div class="bg-slate-50 border border-indigo-100 rounded-md p-2 cursor-pointer transition-all hover:bg-indigo-100 hover:border-blue-500 hover:transform hover:-translate-y-0.5 flex justify-between items-center" (click)="fillDemo('teacher', 'teacher')">
+            <span class="font-medium text-blue-700 text-xs">👨🏫 Enseignant</span>
+            <span class="font-mono text-slate-500 text-xs bg-white p-1 rounded border border-indigo-100">teacher / teacher</span>
+          </div>
+          <div class="bg-slate-50 border border-indigo-100 rounded-md p-2 cursor-pointer transition-all hover:bg-indigo-100 hover:border-blue-500 hover:transform hover:-translate-y-0.5 flex justify-between items-center" (click)="fillDemo('student', 'student')">
+            <span class="font-medium text-blue-700 text-xs">🎓 Étudiant</span>
+            <span class="font-mono text-slate-500 text-xs bg-white p-1 rounded border border-indigo-100">student / student</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Présentation (Droite) -->
+  <div class="flex-1 flex items-center justify-center p-4 relative overflow-hidden">
+    <div class="max-w-md text-white" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3)">
+      <div>
+        <h1 class="text-4xl font-bold mb-3 leading-tight">🎓 Système de Gestion des Notes</h1>
+        <p class="text-base mb-8 opacity-90">Plateforme moderne pour les établissements scolaires</p>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white bg-opacity-15 p-4 rounded-xl backdrop-blur-md border border-white border-opacity-20 transition-all hover:transform hover:-translate-y-1 hover:bg-opacity-20">
+            <div class="text-2xl mb-1">📊</div>
+            <h3 class="text-sm font-semibold mb-1">Tableau de Bord</h3>
+            <p class="text-xs opacity-80 leading-snug">Visualisation complète des résultats</p>
+          </div>
+          
+          <div class="bg-white bg-opacity-15 p-4 rounded-xl backdrop-blur-md border border-white border-opacity-20 transition-all hover:transform hover:-translate-y-1 hover:bg-opacity-20">
+            <div class="text-2xl mb-1">✏️</div>
+            <h3 class="text-sm font-semibold mb-1">Saisie Rapide</h3>
+            <p class="text-xs opacity-80 leading-snug">Interface intuitive pour les enseignants</p>
+          </div>
+          
+          <div class="bg-white bg-opacity-15 p-4 rounded-xl backdrop-blur-md border border-white border-opacity-20 transition-all hover:transform hover:-translate-y-1 hover:bg-opacity-20">
+            <div class="text-2xl mb-1">📈</div>
+            <h3 class="text-sm font-semibold mb-1">Statistiques</h3>
+            <p class="text-xs opacity-80 leading-snug">Analyses détaillées des performances</p>
+          </div>
+          
+          <div class="bg-white bg-opacity-15 p-4 rounded-xl backdrop-blur-md border border-white border-opacity-20 transition-all hover:transform hover:-translate-y-1 hover:bg-opacity-20">
+            <div class="text-2xl mb-1">🔒</div>
+            <h3 class="text-sm font-semibold mb-1">Sécurisé</h3>
+            <p class="text-xs opacity-80 leading-snug">Protection des données étudiantes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

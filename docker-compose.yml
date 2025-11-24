@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: gestion-notes-db
+    environment:
+      POSTGRES_DB: GradeManagement_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gestion-notes-network
+
+  backend:
+    build: .
+    container_name: gestion-notes-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/GradeManagement_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8083:8083"
+    depends_on:
+      - database
+    networks:
+      - gestion-notes-network
+
+  frontend:
+    build: ./frontendGN
+    container_name: gestion-notes-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - gestion-notes-network
+
+volumes:
+  postgres_data:
+
+networks:
+  gestion-notes-network:
+    driver: bridge

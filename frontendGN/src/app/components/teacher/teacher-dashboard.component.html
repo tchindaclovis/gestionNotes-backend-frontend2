@@ -1,0 +1,191 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Gestion des Notes</h1>
+        <p class="text-gray-600 mt-2">Saisissez et gérez les notes de vos étudiants</p>
+      </div>
+      <button (click)="openGradeModal()" class="btn-primary">
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"></path>
+        </svg>
+        Nouvelle Note
+      </button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div class="card">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Notes Saisies</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ grades.length }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-green-100 text-green-600">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Matières</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ subjects.length }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Étudiants</p>
+            <p class="text-2xl font-semibold text-gray-900">{{ students.length }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="flex items-center">
+          <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-600">Moyenne Classe</p>
+            <p class="text-2xl font-semibold text-gray-900">14.2/20</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grades Table -->
+    <div class="card">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-semibold">Notes Récentes</h3>
+        <div class="flex space-x-4">
+          <select class="input-field w-48" [(ngModel)]="selectedClass">
+            <option value="">Toutes les classes</option>
+            <option value="3A">Classe 3A</option>
+            <option value="3B">Classe 3B</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Étudiant</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Matière</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Note</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Coefficient</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let grade of grades">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {{ grade.studentName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ getSubjectName(grade.subjectId) }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold" [class]="getGradeColor(grade.value)">
+                {{ grade.value }}/20
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ grade.coefficient }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ grade.date | date:'dd/MM/yyyy' }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <button (click)="openGradeModal(grade)" class="text-blue-600 hover:text-blue-900 mr-3">
+                  Modifier
+                </button>
+                <button (click)="deleteGrade(grade)" class="text-red-600 hover:text-red-900">
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grade Modal -->
+<div *ngIf="showGradeModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+  <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+    <div class="mt-3">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">
+        {{ editingGrade ? 'Modifier la Note' : 'Nouvelle Note' }}
+      </h3>
+      
+      <form [formGroup]="gradeForm" (ngSubmit)="onSubmitGrade()">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Étudiant</label>
+            <select formControlName="studentId" class="input-field">
+              <option value="">Sélectionner un étudiant</option>
+              <option *ngFor="let student of students" [value]="student.id">
+                {{ student.firstname }} {{ student.lastname }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Matière</label>
+            <select formControlName="subjectId" class="input-field">
+              <option value="">Sélectionner une matière</option>
+              <option *ngFor="let subject of subjects" [value]="subject.id">
+                {{ subject.name }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Note (/20)</label>
+            <input type="number" formControlName="value" class="input-field" min="0" max="20" step="0.5">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Coefficient</label>
+            <input type="number" formControlName="coefficient" class="input-field" min="0.5" max="5" step="0.5">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Commentaire (optionnel)</label>
+            <textarea formControlName="comment" class="input-field" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-3 mt-6">
+          <button type="button" (click)="closeGradeModal()" class="btn-secondary">
+            Annuler
+          </button>
+          <button type="submit" [disabled]="gradeForm.invalid" class="btn-primary">
+            {{ editingGrade ? 'Modifier' : 'Ajouter' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
