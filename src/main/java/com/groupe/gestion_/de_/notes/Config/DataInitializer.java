@@ -40,13 +40,13 @@ public class DataInitializer implements CommandLineRunner {
 
     private void initializeData() {
         // Créer admin seulement s'il n'existe pas
-        if (!userRepository.existsByUsername("darwin")) {
+        if (!userRepository.existsByUsername("clovis")) {
             Admin admin = Admin.builder()
-                    .username("darwin")
-                    .password(passwordEncoder.encode("darwin"))
-                    .firstname("Darwin")
+                    .username("clovis")
+                    .password(passwordEncoder.encode("clovis"))
+                    .firstname("Clovis")
                     .lastname("Admin")
-                    .email("darwin@example.com")
+                    .email("clovis@example.com")
                     .role(Role.ADMIN)
                     .build();
             adminRepository.save(admin);

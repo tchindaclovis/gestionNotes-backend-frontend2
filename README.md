@@ -15,8 +15,8 @@
 ### JWT Token Usage
 ```bash
 # Login
-curl -X POST http://localhost:3030/api/auth/signin \
+curl -X POST http://localhost:4200/api/auth/signin \
   -H "Content-Type: application/json" \
-  -d '{"username":"darwin","password":"darwin"}'
+  -d '{"username":"clovis","password":"clovis"}'
 
 
